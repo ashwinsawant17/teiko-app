@@ -1,0 +1,83 @@
+Let's think about how the schema should be designed, just from a preliminary analysis
+
+
+Each record has:
+- project (only a handful of unique across thousands of records)
+- subject (only a handful of a given subj in a project, assuming that they aren't shared across projects)
+- data thats consistent for a given subject (at least seemingly)
+    - condition
+    - age 
+    - sex 
+    - treatment 
+    - response 
+- sample (each record has a unique sample)
+- data from the sample
+    - sample_type 
+    - time_from_treatment_start
+    - b_cell
+    - cd8_t_cell
+    - cd4_t_cell
+    - nk_cell
+    - monocyte
+
+
+This seems to translate into a 2, maybe 3 table schema
+I'm not going to worry too much about efficient storage especially for integer types
+I think Varchars are probably good enough for textual, and generic integer types are good enough 
+since sqlite isnt as strict with typing anyways
+
+Table 1: subjects
+- subject_id (primary key) (this can either be the subject itself, or some other generated primary key)
+- subject (if it's not the subject_id)
+    - i think we should go with subject=subject_id
+- project (i'm going to assume we're keeping it here and not having a separate projects table)
+    - if we end up having more metadata at the project level, maybe it would be worth spliting, but we don't
+- condition (varchar(20))
+- age (int) (can probably do an int8 cause no one's gonna be older than 255)
+- sex (char(1)) (probably safer to give some space, but if we're guaranteed just one, this is probably the best for smaller files)
+- treatment (varchar(20))
+- response (bool)
+
+
+Table 2: samples
+- sample_id (primary key) probably an auto increment int for now
+- sample (varchar(10)) the sample code
+- sample_type (varchar(10))
+- time_from_treatment_start (int)
+- b_cell (int)
+- cd8_t_cell (int)
+- cd4_t_cell (int)
+- nk_cell (int)
+- monocyte (int)
+
+I have a few ideas for a 3rd table
+- either keep projects separate (probably not the best idea)
+- or keep sample metadata separate from sample data
+
+I think I'm going to go ahead and split the samples into samples + cell_counts
+where samples contains metadata, and cell_counts rows reference the sample and have the actual counts
+I also think I'm going to stick firm on the subject and sample themselves being primary keys, not an auto increment int
+(even though that's what sqlite3 does under the hood)
+
+Table 1: subjects
+- subject (varchar(10)) primary key
+- project (varchar(10))
+- condition (varchar(20))
+- age (int) (can probably do an int8 cause no one's gonna be older than 255)
+- sex (char(1)) (probably safer to give some space, but if we're guaranteed just one, this is probably the best for smaller files)
+- treatment (varchar(20))
+- response (bool)
+
+NEW Table 2: samples 
+- sample primary key (varchar(10)) the sample code
+- subject VARCHAR(10) references subjects(subject)
+- sample_type (varchar(10))
+- time_from_treatment_start (int)
+
+Table 3: cell_counts 
+- sample primary key (varchar(10)) the sample code (references samples(sample))
+- b_cell (int)
+- cd8_t_cell (int)
+- cd4_t_cell (int)
+- nk_cell (int)
+- monocyte (int)
