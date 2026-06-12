@@ -5,10 +5,23 @@ import plotly.express as px
 
 from analysis import get_relative_frequencies
 
+import os
+
 
 
 DB = "cell-count.db"
+CSV = 'cell-count.csv'
 CELL_COLS = ["b_cell", "cd8_t_cell", "cd4_t_cell", "nk_cell", "monocyte"]
+
+
+from load_data import create_db, load_csv
+@st.cache_data
+def load_data():
+    if not os.path.isfile(DB):
+        create_db(DB)
+        load_csv(CSV, DB)
+
+load_data()
 
 st.set_page_config(page_title="Teiko Cytometry Dashboard", layout="wide")
 st.title("Teiko Cytometry Dashboard")

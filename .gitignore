@@ -6,3 +6,6 @@
 
 # testing stuff
 dashboard2.py
+
+# build artifacts
+output/*
