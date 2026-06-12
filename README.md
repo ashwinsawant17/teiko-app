@@ -108,3 +108,5 @@ analysis.py primarily splits up the functionality by section of Bob's analysis
 In general, I aim to make it as modular as possible, so that some of these functions can be reused in the later dashboard. For that same reason, a lot of the filtering that Bob does before doing his analysis, I input as optional parameters, so that we can later let a user make those choices themselves.
 
 The dashboard is again split up by function. Essentially using those functions to display the analysis in a more interactive way, letting the user choose their filtering options. Because some of the displays rely on the same kind of filtering, I created a sidebar for the common ones, although they do not affect everything. This way a user doesn't have to choose between having to re-select their filtering choices (if we remade the selectors closer to the new insights) or having to scroll up and down to some common place where they choose the filtering.
+
+The dashboard can be found at https://teiko-app-ashwinsawant17.streamlit.app
