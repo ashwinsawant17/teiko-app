@@ -117,7 +117,7 @@ def load_csv(csv_name, db_name):
                     'age': int(row['age']),
                     'sex': row['sex'],
                     'treatment': row['treatment'],
-                    'response': None if row['response'] is None else True if row['response'].strip().lower() == 'yes' else False,
+                    'response': None if row['response'] == '' else True if row['response'].strip().lower() == 'yes' else False,
                 }
             
             # add in the sample data

@@ -3,3 +3,6 @@
 
 # virtual environment
 .venv
+
+# testing stuff
+dashboard2.py

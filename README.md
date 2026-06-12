@@ -20,7 +20,28 @@ To install the necessary dependencies, go to the root directory and use the comm
 ```
 pip install -r requirements.txt
 ```
-You can then use the Makefile as detailed in the instructions
+You can then run load_data.py, analysis.py, and dashboard.py
+```
+python load_data.py
+python analysis.py
+python dahsboard.py
+```
+
+If you are using the given Makefile, you can bypass all of these steps, as it will create the virtual environment for you \
+Use the setup target to install everything
+```
+make setup
+```
+Use the pipeline target to generate all the plots and tables
+```
+make pipeline
+```
+Use the dashboard target to run the dashboard
+```
+make dashboard
+```
+
+By default, you can find tables and plots in the `output/` directory
 
 ## Schema Design
 My more unpolished notes on schema design can be found [here](/notes.txt) 
